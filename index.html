@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    #mainbox{
+      
+      text-align: center;
+      border: 1px solid grey;
+     
+      width: 20%;
+      margin: auto;
+      padding: 20px;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+      display:flex;
+      justify-content: space-between;
+
+      
+    }
+
+    #mainbox > button{
+      border: none;
+      border: 1px solid grey;
+      color: red;
+      border-radius: 8px;
+    }
+
+   
+    #box{
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+       text-align: center;
+       width: 30%;
+       border: 1px solid black;
+       margin: auto;
+       box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+    
+    }
+    #box{
+      margin-top: 20px;
+      border: none;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+      border: 1px solid gray;
+      border-radius: 8px;
+      
+    }
+   
+  </style>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <script type="text/babel">
+
+
+function TodoApp(){
+
+  let [todos,setTodos] = React.useState([])
+  let [newTodo,setNewTodo] = React.useState("")
+
+  function handleTodo(){
+    setTodos([...todos,{ id: Date.now() , text:newTodo, completed:false}])
+    setNewTodo("")
+  }
+
+  const toggleTodo = (id) => {
+    setTodos(prevTodo => prevTodo.map(todo => todo.id === id ? {...todo , completed : !todo.completed } : todo))
+  }
+
+
+  const removeTodo = (id) => {
+    setTodos(prevTodos => prevTodos.filter(todo  => todo.id !== id))
+  }
+ 
+
+  return(
+      <div >
+        <div id="mainbox"><input type="text" value={newTodo} placeholder="Enter Todo" onChange={function(e){
+          setNewTodo(e.target.value)
+        }}  />
+        <button onClick={handleTodo}>Add Todo</button></div>
+        
+        <ul>
+          {todos.map((todo,index) =>(
+            <li key={todo.id} id="box">
+              <input type="checkbox" checked={todo.completed}  onChange={() => toggleTodo(todo.id)} />
+              {todo.text}
+              <button onClick={() => removeTodo(todo.id)}>Delete</button>
+             
+              </li>
+          ))}
+          </ul>
+      </div>
+  )
+}
+
+
+
+      let rootElement = ReactDOM.createRoot(document.getElementById("root"));
+
+      rootElement.render(<TodoApp />);
+    </script>
+  </body>
+</html>
